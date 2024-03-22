@@ -9,6 +9,19 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+//Database books
+var fs = require('fs');
+var bookFile = __dirname + '/' + "books.db"
+var exists = fs.existsSync(bookFile)
+if(!exists) {
+  fs.openSync(bookFile,"w")
+}
+var sqlite3 = require("sqlite3").verbose();
+var books = new sqlite3.Database(bookFile); //TODO: Handle error
+
+books.serialize()
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
