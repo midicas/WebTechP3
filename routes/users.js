@@ -1,5 +1,5 @@
 var express = require('express');
-var bcrypt = require("bcrypt")
+var bcrypt = require("bcrypt");
 var router = express.Router();
 
 
@@ -18,9 +18,10 @@ router.get('/login', function(req, res) {
   res.render('login', {pageTitle : 'Login'});
 });
 
-router.post('/login', async function(req, res) {
-    let Username = req.body.username;
-    let Password = req.body.password;
+router.post('/login', function(req, res) {
+    const testPassword = "hoihoi";
+    let userName = req.body.username;
+    let passWord = req.body.password;
 
     // Check if username exists in the database:
 
@@ -33,8 +34,10 @@ router.post('/login', async function(req, res) {
     //const IsMatch = await bcrypt.compare(Password, Hashuser)
 
     // If not return an error message telling the user that either the username or password is wrong
-
-    res.render('index', { pageTitle: 'to be implemented' });
+    if (passWord !== testPassword){
+      res.status(401).send("Not authorized");
+    }
+    res.send(userName + " " + passWord);
 });
 
 
@@ -44,19 +47,16 @@ router.get('/register', function(req, res) {
 });
 
 router.post('/register', async function(req, res) {
-  let Username = req.body.username;
-  let Password = req.body.password;
-
-  // Check if username already exists in the database:
-
-
-  // Hash the user its password to store:
-  const PasswordHash = await bcrypt.hash(Password, 13);
-
-  // Save the user information with the hashed password to the database:
+  let firstName = req.body.firstname;
+  let lastName = req.body.lastname;
+  let emailAdress = req.body.email;
+  let adress = req.body.adress;
+  let userName = req.body.username;
+  let passWord = req.body.password;
 
 
-  res.render('index', { pageTitle: 'to be implemented' });
+
+  res.send(firstName + " " + lastName + " " + emailAdress + " " + adress + " " + userName + " " + passWord);
 });
 
 module.exports = router;
