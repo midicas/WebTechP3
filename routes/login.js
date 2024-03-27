@@ -6,11 +6,11 @@ router.get('/', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/', function(req, res) {
+router.post('/', async function(req, res) {
     let username = req.body.username;
     let password = req.body.password;
 
-    let hash = await bcrypt.hash(password, 13)
+    const hash = await bcrypt.hash(password, 13)
     console.log(hash);
     res.render('index',{ title: username + hash});
 });
