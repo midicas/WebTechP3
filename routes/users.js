@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/:userID', function(req, res, next) {
+router.get('/:userID(\\d+)', function(req, res, next) {
   res.render('profile',{ title: req.params.userID });
 });
 
