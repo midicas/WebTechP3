@@ -8,12 +8,11 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-/* Get user login */
+// User Login functionality:
 router.get('/login', function(req, res) {
   res.render('login');
 });
 
-/* Post user login */
 router.post('/login', async function(req, res) {
     let Username = req.body.username;
     let Password = req.body.password;
@@ -30,15 +29,14 @@ router.post('/login', async function(req, res) {
 
     // If not return an error message telling the user that either the username or password is wrong
 
-    res.render('index', { Title: 'to be implemented' });
+    res.render('index', { title: 'to be implemented' });
 });
 
-/* Get user register */
+// User registry functionality:
 router.get('/register', function(req, res) {
   res.render('register');
 });
 
-/* Post user register */
 router.post('/register', async function(req, res) {
   let Username = req.body.username;
   let Password = req.body.password;
@@ -52,14 +50,7 @@ router.post('/register', async function(req, res) {
   // Save the user information with the hashed password to the database:
 
 
-  res.render('index', { Title: 'to be implemented' });
+  res.render('index', { title: 'to be implemented' });
 });
-
-
-
-
-
-
-
 
 module.exports = router;
