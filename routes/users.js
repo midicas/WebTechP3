@@ -10,12 +10,12 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/:userID(\\d+)', function(req, res, next) {
-  res.render('profile',{ title: req.params.userID });
+  res.render('profile',{ pageTitle: req.params.userID });
 });
 
 // User Login functionality:
 router.get('/login', function(req, res) {
-  res.render('login');
+  res.render('login', {pageTitle : 'Login'});
 });
 
 router.post('/login', async function(req, res) {
@@ -34,13 +34,13 @@ router.post('/login', async function(req, res) {
 
     // If not return an error message telling the user that either the username or password is wrong
 
-    res.render('index', { title: 'to be implemented' });
+    res.render('index', { pageTitle: 'to be implemented' });
 });
 
 
 // User registry functionality:
 router.get('/register', function(req, res) {
-  res.render('register');
+  res.render('register', {pageTitle : 'Register'});
 });
 
 router.post('/register', async function(req, res) {
@@ -56,7 +56,7 @@ router.post('/register', async function(req, res) {
   // Save the user information with the hashed password to the database:
 
 
-  res.render('index', { title: 'to be implemented' });
+  res.render('index', { pageTitle: 'to be implemented' });
 });
 
 module.exports = router;
