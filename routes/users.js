@@ -8,6 +8,11 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+
+router.get('/users/:userID', function(req, res, next) {
+  res.render('profile',{ title: req.params.userID });
+});
+
 // User Login functionality:
 router.get('/login', function(req, res) {
   res.render('login');
@@ -31,6 +36,7 @@ router.post('/login', async function(req, res) {
 
     res.render('index', { title: 'to be implemented' });
 });
+
 
 // User registry functionality:
 router.get('/register', function(req, res) {
