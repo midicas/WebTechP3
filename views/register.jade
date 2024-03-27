@@ -7,7 +7,7 @@ html(lang="en")
     title Login Page
   body
     h1 Login
-    form(action="/users/login", method="post")
+    form(action="/users/register", method="post")
       label(for="username") Username:
       input(type="text", id="username", name="username")
       br
@@ -15,4 +15,4 @@ html(lang="en")
       input(type="password", id="password", name="password")
       br
       input(type="submit", value="Login")
-    a(href="./register") No account yet? Click here to register
+    a(href="./register") a link

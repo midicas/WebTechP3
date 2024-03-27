@@ -3,11 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get('/users/:userID', function(req, res, next) {
-  res.render('profile',{ title: req.params.userID });
+  res.render('index', { Title: 'Express' });
 });
 
 router.get('/description', function(req, res,next){
