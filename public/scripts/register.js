@@ -34,7 +34,7 @@ function post(url, firstName, lastName, emailAdress, adress, userName, passWord)
     req.onreadystatechange = function() {
         // Open the users page if the status is 200
         if (req.readyState === 4 && req.status === 200){
-            window.open('/users/'+ req.responseText, '_self');
+            window.open('/users', '_self');
         }
     }
     var payLoad = JSON.stringify({

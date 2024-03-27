@@ -37,7 +37,12 @@ router.post('/login', function(req, res) {
     if (passWord !== testPassword){
       res.status(401).send("Not authorized");
     }
-    res.send(userName + " " + passWord);
+
+    else{
+      //TODO add functionality and not sent the results back!!!!!!!!!:
+      console.log(userName + " " + passWord);
+      res.send(userName + " " + passWord);
+    }
 });
 
 
@@ -55,8 +60,10 @@ router.post('/register', async function(req, res) {
   let passWord = req.body.password;
 
 
-
+  //TODO add functionality and not sent the results back!!!!!!!!!:
+  console.log(firstName + " " + lastName + " " + emailAdress + " " + adress + " " + userName + " " + passWord);
   res.send(firstName + " " + lastName + " " + emailAdress + " " + adress + " " + userName + " " + passWord);
+  
 });
 
 module.exports = router;
