@@ -2,15 +2,22 @@ var express = require('express');
 var bcrypt = require("bcrypt");
 var router = express.Router();
 
+function isLoggedIn(req, res, next) {
+  if (req.session && req.session.user) {
+    return next(); // User is authenticated, continue to the next middleware
+  }
+  // User is not authenticated, redirect to login page
+  res.redirect('/users/login');
+}
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', isLoggedIn, function(req, res, next) {
+  res.redirect("/users/profile")
 });
-
-
-router.get('/:userID(\\d+)', function(req, res, next) {
-  res.render('profile',{ pageTitle: req.params.userID });
+//Render profile page
+router.get('/profile', isLoggedIn, (req, res) => {
+  //TODO: Give user through req.session.userName.
+  res.render('profile',{pageTitle:"Profile Page"});
 });
 
 // User Login functionality:
@@ -39,7 +46,7 @@ router.post('/login', function(req, res) {
     }
 
     else{
-      //TODO add functionality and not sent the results back!!!!!!!!!:
+      //TODO should load the userID in the req.session.username
       console.log(userName + " " + passWord);
       res.send(userName + " " + passWord);
     }

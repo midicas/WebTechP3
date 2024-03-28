@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -9,19 +10,7 @@ var usersRouter = require('./routes/users');
 
 
 var app = express();
-
-//Database books
-var fs = require('fs');
-var bookFile = __dirname + '/' + "books.db";
-var exists = fs.existsSync(bookFile);
-if(!exists) {
-  fs.openSync(bookFile,"w");
-}
-var sqlite3 = require("sqlite3").verbose();
-var books = new sqlite3.Database(bookFile); //TODO: Handle error
-
-books.serialize();
-
+//TODO: Handle error
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,6 +22,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Set up session
+app.use(session({
+  secret: 'generate_cookie', //TODO create random generated cookie
+  resave: false,
+  saveUninitialized: false
+}));
+//Set up routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -53,4 +49,11 @@ app.use(function(err, req, res, next) {
   res.render('error', {pageTitle : 'Error'});
 });
 
+function isLoggedIn(req, res, next) {
+  if (req.session && req.session.user) {
+    return next(); // User is authenticated, continue to the next middleware
+  }
+  // User is not authenticated, redirect to login page
+  res.redirect('/users/login');
+}
 module.exports = app;
