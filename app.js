@@ -26,8 +26,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'generate_cookie', //TODO create random generated cookie
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 3600000 // 1 hour sessions
+  }
 }));
+
+app.use((req, res, next) => {
+  console.log(req.session);
+  next();
+})
+
 //Set up routers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

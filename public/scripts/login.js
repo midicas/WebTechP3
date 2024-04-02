@@ -14,7 +14,7 @@ function mylogin(e) {
         
     }
     else{
-        var url = 'login';
+        var url = 'authenticate';
         post(url, userName, passWord);
     }
     e.preventDefault();

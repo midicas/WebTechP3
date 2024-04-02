@@ -14,18 +14,20 @@ function isLoggedIn(req, res, next) {
 router.get('/', isLoggedIn, function(req, res, next) {
   res.redirect("/users/profile")
 });
+
 //Render profile page
 router.get('/profile', isLoggedIn, (req, res) => {
   //TODO: Give user through req.session.userName.
   res.render('profile',{pageTitle:"Profile Page"});
 });
 
+
 // User Login functionality:
 router.get('/login', function(req, res) {
   res.render('login', {pageTitle : 'Login'});
 });
 
-router.post('/login', function(req, res) {
+router.post('/authenticate', function(req, res) {
     const testPassword = "hoihoi";
     let userName = req.body.username;
     let passWord = req.body.password;
@@ -47,18 +49,17 @@ router.post('/login', function(req, res) {
 
     else{
       //TODO should load the userID in the req.session.username
-      console.log(userName + " " + passWord);
       res.send(userName + " " + passWord);
     }
 });
 
 
 // User registry functionality:
-router.get('/register', function(req, res) {
-  res.render('register', {pageTitle : 'Register'});
+router.get('/signup', function(req, res) {
+  res.render('signup', {pageTitle : 'Signup'});
 });
 
-router.post('/register', async function(req, res) {
+router.post('/signup', async function(req, res) {
   let firstName = req.body.firstname;
   let lastName = req.body.lastname;
   let emailAdress = req.body.email;
@@ -66,10 +67,6 @@ router.post('/register', async function(req, res) {
   let userName = req.body.username;
   let passWord = req.body.password;
 
-
-  //TODO add functionality and not sent the results back!!!!!!!!!:
-  console.log(firstName + " " + lastName + " " + emailAdress + " " + adress + " " + userName + " " + passWord);
-  res.send(firstName + " " + lastName + " " + emailAdress + " " + adress + " " + userName + " " + passWord);
   
 });
 

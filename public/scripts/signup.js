@@ -18,7 +18,7 @@ function myregister(e) {
         
     }
     else{
-        var url = 'register';
+        var url = 'signup';
         post(url, firstName, lastName, emailAdress, adress, userName, passWord);
     }
     e.preventDefault();
@@ -34,9 +34,10 @@ function post(url, firstName, lastName, emailAdress, adress, userName, passWord)
     req.onreadystatechange = function() {
         // Open the users page if the status is 200
         if (req.readyState === 4 && req.status === 200){
-            window.open('/users', '_self');
+            window.open('/users/profile', '_self');
         }
     }
+
     var payLoad = JSON.stringify({
         'firstname': firstName,
         'lastname' : lastName,
