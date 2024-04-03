@@ -40,6 +40,7 @@ for (bookie of booksArray){
 // add test user to db
 testUser = new user(1,"john", "test@yeehaw.com", "johnatron", "password", "1234 negro arroya lane NM");
 testUser.addToDB();
+w = testUser.fetch(testUser.username);
 
 function selectRows() {
     db.each('SELECT username FROM users', (error, row) => {
