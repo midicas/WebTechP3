@@ -64,12 +64,13 @@ router.get('/signup', function(req, res) {
 router.post('/signup', async function(req, res) {
   let firstName = req.body.firstname;
   let lastName = req.body.lastname;
-  let emailAdress = req.body.email;
-  let adress = req.body.adress;
+  let emailAddress = req.body.email;
+  let address = req.body.address;
   let userName = req.body.username;
   let passWord = req.body.password;
 
-  
+  req.session.user = "lol";
+  res.end();
 });
 
 module.exports = router;
