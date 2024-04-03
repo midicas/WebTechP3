@@ -14,7 +14,9 @@ router.get('/further', (req,res,next) =>{
   start = start + range;
   router.redirect('/');
 })
-
+router.get("/books/description",(req,res,next)=>{
+  res.render('description',{pageTitle:"Description"});
+})
 router.post('/books/:start/:range',function(req,res,next){
   //Fetch Books from database
   //Is only called in html js
