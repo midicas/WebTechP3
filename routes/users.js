@@ -43,7 +43,7 @@ router.post('/authenticate', function(req, res) {
     //const IsMatch = await bcrypt.compare(Password, Hashuser)
 
     // If not return an error message telling the user that either the username or password is wrong
-    if (passWord !== testPassword){
+    if (passWord !== testPassword){         //if username not found or password incorrect
       res.status(401).send("Not authorized");
     }
 
