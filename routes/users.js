@@ -9,7 +9,6 @@ function isLoggedIn(req, res, next) {
   // User is not authenticated, redirect to login page
   res.redirect('/users/login');
 }
-
 /* GET users listing. */
 router.get('/', isLoggedIn, function(req, res, next) {
   res.redirect("/users/profile")

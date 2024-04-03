@@ -61,6 +61,14 @@ footer{
     position:relative;
     bottom: 0;
 }
+table{
+    border-collapse: collapse;
+}
+td{
+    border:solid rgb(50,50,50);
+    border-collapse:collapse;
+    padding:10px;
+}
 
 @media(min-width:480px){
     main{

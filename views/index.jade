@@ -1,3 +1,7 @@
 extends layout
 block content
-//TODO call a fetch function that on load connects with the database.  
+    - var _start = 0
+    - var _range = 10
+    ul
+        each num in Array(_range).fill().map((_, index) => _start + index)
+            li(id="book"+num)
