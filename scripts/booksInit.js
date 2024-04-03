@@ -20,7 +20,7 @@ db.run(tableStatement, console.log("Books table is created!"),(err) => {
 });
 
 // create a table for the users
-tableStatement = "CREATE TABLE users (ID, NAME, EMAIL, USERNAME, PASSWORD, ADDRESS)";
+tableStatement = "CREATE TABLE users (ID, NAME, EMAIL, USERNAME, PASSWORD, ADDRESS, RESERVATION_HISTORY)";
 db.run(tableStatement, console.log("Books table is created!"), (err) => {
     if (err){
         console.error(err.message);

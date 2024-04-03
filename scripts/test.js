@@ -18,8 +18,16 @@ for (bookie of booksArray){
 }
 
 // add test user to db
-testUser = new user(1,"john", "test@yeehaw.com", "johnatron", "password", "1234 negro arroya lane NM");
-console.log(testUser.fetch(testUser.username))
+
+main()
+
+async function main(){
+    testUser = new user(1,"Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
+    await testUser.addToDB();
+    a = await testUser.fetch("rubendepuben");
+    console.log(a)
+}
+
 
 
 // function selectRows() {

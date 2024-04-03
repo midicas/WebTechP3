@@ -13,7 +13,7 @@ class book{
 
     // log this book to db
     addToDB() {
-        let db = new sqlite3.Database("../database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+        let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
             if (err){
                 console.error(err.message);
             }

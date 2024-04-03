@@ -66,4 +66,6 @@ function isLoggedIn(req, res, next) {
   // User is not authenticated, redirect to login page
   res.redirect('/users/login');
 }
+
+
 module.exports = app;
