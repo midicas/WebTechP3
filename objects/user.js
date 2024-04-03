@@ -13,7 +13,7 @@ class user{
     }
     // log to db
     addToDB(){
-        let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+        let db = new sqlite3.Database("../database/books.db", sqlite3.OPEN_READWRITE, (err) => {
             if (err){
                 console.error(err.message);
             }
@@ -34,11 +34,10 @@ class user{
 
     // fetch user object from database function -> userobject, if no such user exists, return none/null
     fetch(username){
-        let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+        let db = new sqlite3.Database("../database/books.db", sqlite3.OPEN_READWRITE, (err) => {
             if (err){
                 console.error(err.message);
             }
-            console.log("successful connection to books database");
         });
 
         let sqlStatement = "SELECT * from users WHERE username = ?";
@@ -46,9 +45,7 @@ class user{
             db.close();
             if(err){throw err};
             
-            const userObj = new user(result.id, result.name, result.email, result.username, result.password, result.address, result.reservationHistory);
-            console.log(userObj.name);
-            return userObj;
+            return result;
         });
         
     }
