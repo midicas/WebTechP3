@@ -49,8 +49,9 @@ router.post('/authenticate', function(req, res) {
 
     else{
       //TODO should load the userID in the req.session.username
-      res.send(userName + " " + passWord);
       req.session.user = "lol";
+      res.send(userName + " " + passWord);
+      
     }
 });
 
