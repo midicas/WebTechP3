@@ -33,11 +33,16 @@ router.post('/authenticate', async function(req, res) {
     const testPassword = "hoihoi";
     let userName = req.body.username;
     let passWord = req.body.password;
+    let IsMatch = flase;
 
     // fetch user object from database based on username:
+    let userObj = user.fetch(userName);
 
-    // Compare the sent password with the hash in the user object
-    const IsMatch = await bcrypt.compare(Password, user.password)
+    if (userObj !== null){
+      // Compare the sent password with the hash in the user object
+      IsMatch = await bcrypt.compare(Password, user.password);
+    }
+      
 
     // If not return an error message telling the user that either the username or password is wrong
     if (!IsMatch){ //if username not found or password incorrect
@@ -46,9 +51,8 @@ router.post('/authenticate', async function(req, res) {
 
     else{
       //TODO should load the userID in the req.session.username
-      req.session.user = "lol";
+      req.session.user = userObj.userName;
       res.send(userName + " " + passWord);
-      
     }
 });
 
@@ -72,7 +76,7 @@ router.post('/signup', async function(req, res) {
 
   // else add the user to the db and add userID to the session directly.
 
-  req.session.user = "lol";
+  req.session.user = userName;
   res.end();
 });
 
