@@ -1,6 +1,8 @@
 var express = require('express');
 var bcrypt = require("bcrypt");
 var router = express.Router();
+const user = require("../objects/user"); 
+
 
 function isLoggedIn(req, res, next) {
   if (req.session && req.session.user) {
@@ -27,24 +29,19 @@ router.get('/login', function(req, res) {
   res.render('login', {pageTitle : 'Login'});
 });
 
-router.post('/authenticate', function(req, res) {
+router.post('/authenticate', async function(req, res) {
     const testPassword = "hoihoi";
     let userName = req.body.username;
     let passWord = req.body.password;
 
-    // Check if username exists in the database:
+    // fetch user object from database based on username:
+
+    // Compare the sent password with the hash in the user object
+    const IsMatch = await bcrypt.compare(Password, user.password)
 
     // If not return an error message telling the user that either the username or password is wrong
-
-    // Load the user its password hash:
-    //let Hashuser;
-
-    // Compare the sent password with the hash in the database
-    //const IsMatch = await bcrypt.compare(Password, Hashuser)
-
-    // If not return an error message telling the user that either the username or password is wrong
-    if (passWord !== testPassword){         //if username not found or password incorrect
-      res.status(401).send("Not authorized");
+    if (!IsMatch){ //if username not found or password incorrect
+      res.status(401).send("Not authorized, wrong username or password!");
     }
 
     else{
@@ -68,6 +65,12 @@ router.post('/signup', async function(req, res) {
   let address = req.body.address;
   let userName = req.body.username;
   let passWord = req.body.password;
+
+  //Try to make a user object from the information:
+
+  // If creating an object failed send a status back.
+
+  // else add the user to the db and add userID to the session directly.
 
   req.session.user = "lol";
   res.end();
