@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var sqlite3 = require("sqlite3").verbose();
+const user = require("../objects/user");
+const book = require("../objects/book");
 
 var start = 0;
 var range = 10;
+var bookObj;
+var userObj;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -29,9 +32,13 @@ router.get('/books',function(req,res,next){
   //res.send(books)
 });
 
-router.get('/books/description/:bookID/get', function(req, res,next){
+router.get('/books/description/:bookID/get', async function(req, res,next){
   //
-  res.send("Hello");
+  bookObj = await book.fetch(req.params.bookID,req.params.bookID);
+  console.log(bookObj);
+
+  res.send(bookObj);
+  next();
 })
 
 function isLoggedIn(req, res, next) {
@@ -42,12 +49,21 @@ function isLoggedIn(req, res, next) {
   res.redirect('/users/login');
 }
 
-router.get('/description/:bookID/reserve', isLoggedIn,function(req,res,next){
+router.get('/description/:bookID/reserve', isLoggedIn,async function(req,res,next){
   //Update user data
   //Connect to database for users and book
   //Add to reservation history of user
   //Subtract from available copies from book.
-  res.send("Reserved book");
+  bookObj = await book.fetch(req.params.bookID,req.params.bookID);
+  if (bookObj.availableCopies > 0){
+    await bookObj.reserve();
+    userObj = await book.fetch(req.session.user);
+    await userObj.reserve(bookObj.title);
+    res.send(bookObj.availableCopies)
+  }
+  else{
+    res.send("");
+  }
 });
 
 module.exports = router;

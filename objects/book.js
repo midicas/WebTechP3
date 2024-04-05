@@ -30,6 +30,47 @@ class book{
 
         db.close();
     }
+    static async fetch(start,end) {
+        return new Promise((resolve, reject) => {
+            let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                    reject(err);
+                }
+            });
+
+            let sqlStatement = "SELECT * from books WHERE ID BETWEEN ? AND ?";
+            db.get(sqlStatement,[start,end], (err, result) => {
+                db.close();
+                if (err) {
+                    reject(err);
+                }
+                let bookObj = null;
+                if (result){
+                    bookObj = new book(result.ID,result.TITLE, result.AUTHOR, result.DESCRIPTION, result.YEAR,result.AVAILABLECOPIES);
+                }
+                resolve(bookObj);
+            });
+        });
+    }
+    static async reserve(){
+        return new Promise((resolve, reject) => {
+            let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                    reject(err);
+                }
+            });
+
+            let sqlStatement = "UPDATE books SET AVAILABLECOPIES = AVAILABLECOPIES-1 WHERE ID = ?";
+            db.run(sqlStatement,this.id, (err, result) => {
+                db.close();
+                if (err) {
+                    reject(err);
+                }
+                resolve();
+            });
+        });
+
+    }
 }
 
 module.exports = book;

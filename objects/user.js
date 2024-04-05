@@ -34,7 +34,22 @@ class user{
         });
     }
     // reservation logic?
+    static async reserve(title){
+        let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+            if (err) {
+                reject(err);
+            }
+        });
 
+        let sqlStatement = "UPDATE users RESERVATION_HISTORY = RESERVATION_HISTROY + ? WHERE username = ?";
+        db.run(sqlStatement, [title,this.username], (err, result) => {
+            db.close();
+            if (err) {
+                reject(err);
+            }
+            resolve();
+        });
+    }
     // fetch user object from database function -> userobject, if no such user exists, return none/null
     
     static async fetch(username) {

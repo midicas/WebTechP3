@@ -22,9 +22,10 @@ for (bookie of booksArray){
 main()
 
 async function main(){
-    testUser = new user(1,"Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
+    var testUser = new user(1,"Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
     await testUser.addToDB();
     a = await testUser.fetch("rubendepuben");
+
     console.log(a)
 }
 

@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/', function(req, res) {
+router.post('/', async function(req, res) {
     let username = req.body.username;
     let password = req.body.password;
 
