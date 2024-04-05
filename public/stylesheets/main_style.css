@@ -13,7 +13,6 @@ body{
 }
 
 #page-header{
-    background-image: url(../Media/Images/icon.png);
     height: 75px;
     background-repeat: no-repeat;
     background-position: left;
@@ -70,7 +69,13 @@ td{
     padding:10px;
 }
 
-@media(min-width:480px){
+@media(min-width:400px){
+    #page-header{
+        background-image: url(../assets/img/circle-of-books-logo.png);
+    }
+}
+
+@media(min-width:650px){
     main{
         margin: 0 15vw;
     }
