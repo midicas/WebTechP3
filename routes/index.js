@@ -10,17 +10,22 @@ router.get('/', function(req, res, next) {
   res.render("index",{pageTitle:"Catalogue"})
 });
 //Pagination route
-router.get('/further', (req,res,next) =>{
+router.get('/books/further', (req,res,next) =>{
   start = start + range;
-  router.redirect('/');
+  res.redirect('/books');
+})
+router.get('/books/back',(req,res,next) =>{
+  start = Math.max(0,start-range);
+  res.redirect('/books')
 })
 router.get("/books/description/:bookID",(req,res,next)=>{
   res.render('description',{pageTitle:"Description"});
 })
-router.post('/books/:start/:range',function(req,res,next){
+router.get('/books',function(req,res,next){
   //Fetch Books from database
   //Is only called in html js
-  
+  console.log(start);
+  next();
   //res.send(books)
 });
 

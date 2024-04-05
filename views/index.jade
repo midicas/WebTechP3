@@ -2,6 +2,7 @@ extends layout
 block content
     - var _start = 0
     - var _range = 10
-    ul
-        each num in Array(_range).fill().map((_, index) => _start + index)
-            li(id="book"+num)
+    script(src="/scripts/index.js")
+
+    button#back(onclick='pagination(\'back\')') Go Back 
+    button#further(onclick='pagination(\'further\')') Go Forward
