@@ -29,26 +29,28 @@ function pagination(text){
     req.send();
 }
 function renderCatalogue(text){
-    //books = JSON.parse(text)
-    var main = document.getElementsByTagName('main');
+    var books = JSON.parse(text)
+    var main = document.getElementsByTagName('main')[0];
     var list = document.createElement('ul');
+
     main.appendChild(list);
-    for(var book in books){
+    for(var book of books){
+        console.log(book);
         var listItem = document.createElement('li');
-        listItem.id = 'book'+book['id'];
+        listItem.id = 'book'+book.id;
         
         var section = document.createElement('SECTION');
         var coverImage = document.createElement("IMG");
-        coverImage.src = book['cover'];
-        coverImage.alt = 'Cover of ' + book['title'];
+        coverImage.src = book.url;
+        coverImage.alt = 'Cover of ' + book.url;
         
         listItem.appendChild(coverImage);
         listItem.appendChild(section);
 
         var title = document.createElement("H1");
         var plot = document.createElement('p');
-        title.appendChild(document.createTextNode(book['title']));
-        plot.appendChild(document.createTextNode(book['plot']));
+        title.appendChild(document.createTextNode(book.title));
+        plot.appendChild(document.createTextNode(book.description));
 
         section.appendChild(title);
         section.appendChild(plot);

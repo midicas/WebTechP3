@@ -10,7 +10,15 @@ var db = new sqlite3.Database("../database/books.db", (err) => {
 
 // add all starting books to database
 booksArray = [
-    new book("test","test","test","test","test",1)
+    new book(1,
+        "The Circle",
+        "https://upload.wikimedia.org/wikipedia/en/2/28/The_Circle_%28Dave_Eggers_novel_-_cover_art%29.jpg?20140811060221",
+        "David Eggers",
+        "\"The Circle,\" is a gripping tale set in a near-future Silicon Valley, where the power and influence of technology corporations reign supreme. The narrative revolves around Mae Holland, a young and ambitious woman who secures a coveted position at The Circle, a fictional tech company reminiscent of Google or Facebook. As Mae delves deeper into her role, she becomes increasingly enmeshed in the company's culture of transparency and surveillance, blurring the lines between her professional and personal life. Eggers skillfully navigates themes of privacy, ethics, and the consequences of unchecked technological advancement, offering readers a thought-provoking exploration of the perils of a hyper-connected world.",
+        "1993",
+        "Knopf",
+        "Thriller",
+        5)
 ];
 
 for (bookie of booksArray){
@@ -22,11 +30,12 @@ for (bookie of booksArray){
 main()
 
 async function main(){
-    var testUser = new user(1,"Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
+    /*const testUser = new user(1,"Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
     await testUser.addToDB();
-    a = await testUser.fetch("rubendepuben");
+    await testUser.fetch("rubendepuben");*/
 
-    console.log(a)
+    const testBook = await book.fetch("1","1");
+    console.log(testBook);
 }
 
 

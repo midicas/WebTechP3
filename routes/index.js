@@ -15,31 +15,47 @@ router.get('/', function(req, res, next) {
 //Pagination route
 router.get('/books/further', (req,res,next) =>{
   start = start + range;
-  res.redirect('/books');
+  res.redirect('/');
 })
 router.get('/books/back',(req,res,next) =>{
   start = Math.max(0,start-range);
-  res.redirect('/books')
+  res.redirect('/')
 })
 router.get("/books/description/:bookID",(req,res,next)=>{
   res.render('description',{pageTitle:"Description"});
 })
-router.get('/books',function(req,res,next){
+router.get('/books',async function(req,res,next){
   //Fetch Books from database
-  //Is only called in html js
-  console.log(start);
-  next();
-  //res.send(books)
+  try {
+    const bookObj = await book.fetch(start,start+range-1);
+
+    if (bookObj) {
+        res.send(bookObj);
+    } else {
+        res.status(404).send("Book not found");
+    }
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+}
 });
 
-router.get('/books/description/:bookID/get', async function(req, res,next){
-  //
-  bookObj = await book.fetch(req.params.bookID,req.params.bookID);
-  console.log(bookObj);
+router.get('/books/description/:bookID/get', async function(req, res, next) {
+  try {
+      const bookID = req.params.bookID;
+      const bookObj = await book.fetch(parseInt(bookID), parseInt(bookID)); // Pass the same ID for both start and end
 
-  res.send(bookObj);
-  next();
-})
+      if (bookObj) {
+          console.log(bookObj);
+          res.send(bookObj[0]);
+      } else {
+          res.status(404).send("Book not found");
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+  }
+});
 
 function isLoggedIn(req, res, next) {
   if (req.session && req.session.user) {
@@ -59,8 +75,8 @@ router.get('/description/:bookID/reserve', isLoggedIn,async function(req,res,nex
     await bookObj.reserve();
     userObj = await book.fetch(req.session.user);
     await userObj.reserve(bookObj.title);
-    res.send(bookObj.availableCopies)
-  }
+    res.send(bookObj.availableCopies);
+    }
   else{
     res.send("");
   }

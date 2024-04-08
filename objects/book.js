@@ -2,12 +2,15 @@
 const sqlite3 = require("sqlite3").verbose();
 class book{
     //constructor and attributes
-    constructor(id, title, author, description, year, availableCopies){
+    constructor(id, title, url, author, description, year, publisher, genre,availableCopies){
         this.id = id;
         this.title = title;
+        this.url = url
         this.author = author;
         this.description = description;
         this.year = year;
+        this.publisher = publisher;
+        this.genre = genre;
         this.availableCopies = availableCopies;
     }
 
@@ -20,8 +23,8 @@ class book{
             console.log("successful connection to books database");
         });
 
-        let bookInfo = [this.id, this.title, this.author, this.description, this.year, this.availableCopies];
-        let sqlStatement = "INSERT INTO books(id, title, author, description, year, availableCopies) VALUES (?,?,?,?,?,?)";
+        let bookInfo = [this.id, this.title, this.url, this.author, this.genre, this.publisher, this.description, this.year, this.availableCopies];
+        let sqlStatement = "INSERT INTO books(id, title, url, author, genre, publisher, description, year, availableCopies) VALUES (?,?,?,?,?,?,?,?,?)";
         db.run(sqlStatement, bookInfo, (err) => {
             if (err){
                 console.error(err.message);
@@ -37,18 +40,25 @@ class book{
                     reject(err);
                 }
             });
-
+            console.log("Connection successfull");
             let sqlStatement = "SELECT * from books WHERE ID BETWEEN ? AND ?";
-            db.get(sqlStatement,[start,end], (err, result) => {
+            db.all(sqlStatement,[start,end], (err, result) => {
                 db.close();
                 if (err) {
                     reject(err);
                 }
-                let bookObj = null;
-                if (result){
-                    bookObj = new book(result.ID,result.TITLE, result.AUTHOR, result.DESCRIPTION, result.YEAR,result.AVAILABLECOPIES);
-                }
-                resolve(bookObj);
+                const books = result.map(row => new book(
+                    row.ID,
+                    row.TITLE,
+                    row.URL,
+                    row.AUTHOR,
+                    row.DESCRIPTION,
+                    row.YEAR,
+                    row.PUBLISHER,
+                    row.GENRE,
+                    row.AVAILABLECOPIES
+                ));
+                resolve(books);
             });
         });
     }
