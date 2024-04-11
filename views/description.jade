@@ -2,13 +2,14 @@ extends layout
 block content
     link(rel = "stylesheet",href='/stylesheets/description_style.css')
     script(src="/scripts/description.js")
-    article 
-        section
+    article#general
+        section.cover
             h1.title
             img#cover
-        section
+        section.description
             h2 Plot
             p#plot
+    article#info
         section
             h2 Additional Information
             table
@@ -30,5 +31,4 @@ block content
                 tr 
                     td Available Copies 
                     td#availableCopies
-            button#reserve(onclick = "reserve()") Reserve
-            button#unreserve(onclick = "unreserve()") Cancel Reservation
+            

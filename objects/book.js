@@ -26,24 +26,31 @@ class book{
         let bookInfo = [this.id, this.title, this.url, this.author, this.genre, this.publisher, this.description, this.year, this.availableCopies];
         let sqlStatement = "INSERT INTO books(id, title, url, author, genre, publisher, description, year, availableCopies) VALUES (?,?,?,?,?,?,?,?,?)";
         db.run(sqlStatement, bookInfo, (err) => {
-            if (err){
-                console.error(err.message);
+            if (err.code === 'SQLITE_CONSTRAINT' && err.message.includes('UNIQUE')) {
+                sqlStatement = "UPDATE books SET title=?, url=?, author=?, genre=?, publisher=?, description=?, year=?, availableCopies=? WHERE id=?"
+                db.run(sqlStatement,[...bookInfo.slice(1),this.id], (err) => {
+                    if (err){
+                        console.error("Error updating book "+this.id+":"+err.message);
+                    }
+                })
+            } else {
+                console.error("Error uploading book:"+err.message); // Log other types of errors
             }
         })
-
         db.close();
     }
     static async fetch(start,end) {
         return new Promise((resolve, reject) => {
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
+
                     reject(err);
                 }
             });
             console.log("Connection successfull");
             let sqlStatement = "SELECT * from books WHERE ID BETWEEN ? AND ?";
             db.all(sqlStatement,[start,end], (err, result) => {
-                db.close();
+            
                 if (err) {
                     reject(err);
                 }
@@ -59,6 +66,7 @@ class book{
                     row.AVAILABLECOPIES
                 ));
                 resolve(books);
+                db.close();
             });
         });
     }

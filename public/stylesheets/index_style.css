@@ -1,0 +1,52 @@
+@media(min-width:840px){
+    .cover{
+        width:40%;
+        float:left;
+    }
+
+    .description{
+        width:50%;
+        float:left;
+    }
+
+    .catalogue__item:after{
+            content:"";
+            display: table;
+            clear :both;
+    }
+}
+.catalogue__item{
+    border-bottom: solid black;
+    padding: 10px;
+}
+
+.cover,.description{
+    padding:10px;
+}
+
+.catalogue__item img{
+    width:200px;
+}
+
+#pagination{
+    float:center;
+    background-color: transparent;
+    margin-top:10px;
+}
+#pagination a {
+    color: black;
+    float: left;
+    width:50%;
+    font-size:40px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color .3s, color .3s;
+  }
+#pagination a:hover{
+    color: white;
+    background-color: #f1665f;
+    border-radius:10px;
+}
+
+

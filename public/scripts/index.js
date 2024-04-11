@@ -1,9 +1,12 @@
 var books;
+var start = 1;
+var range = 10;
+var max = Number.MAX_SAFE_INTEGER;
 
 window.addEventListener("load",function(){
 
     var req = new XMLHttpRequest();
-    var url = window.location.href+"books";
+    var url = "/books/" + start + "/" + range;
     req.open("GET",url,true);
     req.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -11,36 +14,64 @@ window.addEventListener("load",function(){
       };
     }
     req.send();
+
 },false);
 
 
-function pagination(text){
+function pagination(further){
     var main = document.getElementsByTagName('main')
     main.textContent = "";
-
+    if (further){
+        if (max > range + start){
+            start = range + start;
+        }
+        else {
+            console.log('asdf');
+            return;
+        }
+    }
+    else{
+        start = Math.max(1,start-range);
+    }
     var req = new XMLHttpRequest();
-    var url = window.location.href+"books/"+text;
+    var url = "/books/" + start + "/" + range;
     req.open("GET",url,true);
     req.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            renderCatalogue(this.responseText)
+            if (this.responseText.length == 2){
+                max = start-1;
+                start = start-range;
+            }
+            else{
+            var list = document.getElementById('catalogue');
+            list.textContent = "";
+            var main = document.getElementsByTagName('main')[0];
+            main.removeChild(list);
+            
+            renderCatalogue(this.responseText);
+        }
       };
     }
     req.send();
 }
 function renderCatalogue(text){
-    var books = JSON.parse(text)
-    var main = document.getElementsByTagName('main')[0];
+    var books = JSON.parse(text);
+    if(books.length < range){
+        max = start+books.length-1;
+    }
+    console.log(start+","+range+","+max);
+    var buttons = document.getElementById('pagination');
     var list = document.createElement('ul');
-
-    main.appendChild(list);
+    list.id = "catalogue";
+    buttons.parentNode.insertBefore(list,buttons);
     for(var book of books){
-        console.log(book);
         var listItem = document.createElement('li');
         listItem.id = 'book'+book.id;
-        
+        listItem.className = 'catalogue__item';
         var section = document.createElement('SECTION');
+        section.className = 'description';
         var coverImage = document.createElement("IMG");
+        coverImage.className = "cover";
         coverImage.src = book.url;
         coverImage.alt = 'Cover of ' + book.url;
         
@@ -56,13 +87,15 @@ function renderCatalogue(text){
         section.appendChild(plot);
 
         list.appendChild(listItem);
-    }
 
+        addLink(book.id);
+    }
 }
 
 function addLink(id){
     var li = document.getElementById('book'+id);
+    console.log("Added link");
     li.addEventListener('click',function(){
-        window.location.href = window.location.href+'description/'+id;
+        window.location.href = 'books/description/'+id;
     },false);
 }

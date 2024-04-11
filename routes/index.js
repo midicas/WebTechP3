@@ -3,32 +3,22 @@ var router = express.Router();
 const user = require("../objects/user");
 const book = require("../objects/book");
 
-var start = 0;
-var range = 10;
 var bookObj;
 var userObj;
-
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render("index",{pageTitle:"Catalogue"})
-});
+router.get('/',function(req,res,next){
+  res.render("index",{pageTitle:"Catalogue"});
+})
 //Pagination route
-router.get('/books/further', (req,res,next) =>{
-  start = start + range;
-  res.redirect('/');
-})
-router.get('/books/back',(req,res,next) =>{
-  start = Math.max(0,start-range);
-  res.redirect('/')
-})
 router.get("/books/description/:bookID",(req,res,next)=>{
   res.render('description',{pageTitle:"Description"});
 })
-router.get('/books',async function(req,res,next){
+router.get('/books/:start/:range',async function(req,res,next){
   //Fetch Books from database
+  var start = parseInt(req.params.start);
+  var range = parseInt(req.params.range);
   try {
     const bookObj = await book.fetch(start,start+range-1);
-
     if (bookObj) {
         res.send(bookObj);
     } else {
@@ -70,7 +60,8 @@ router.get('/description/:bookID/reserve', isLoggedIn,async function(req,res,nex
   //Connect to database for users and book
   //Add to reservation history of user
   //Subtract from available copies from book.
-  bookObj = await book.fetch(req.params.bookID,req.params.bookID);
+  let bookID = parseInt(req.params.bookID);
+  bookObj = await book.fetch(bookID,bookID);
   if (bookObj.availableCopies > 0){
     await bookObj.reserve();
     userObj = await book.fetch(req.session.user);

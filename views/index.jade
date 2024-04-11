@@ -1,8 +1,7 @@
 extends layout
 block content
-    - var _start = 0
-    - var _range = 10
     script(src="/scripts/index.js")
-
-    button#back(onclick='pagination(\'back\')') Go Back 
-    button#further(onclick='pagination(\'further\')') Go Forward
+    link(rel = "stylesheet",href='/stylesheets/index_style.css')
+    nav#pagination
+        a#back(href = "#",onclick='pagination(0)') &laquo; 
+        a#further(href = "#",onclick='pagination(1)') &raquo;
