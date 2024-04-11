@@ -11,18 +11,38 @@ window.addEventListener("load",function(){
       };
     }
     req.send();
+
+    var button = document.getElementById("reserve");
+    console.log(button);
+    req = new XMLHttpRequest();
+    url = window.location.href+"/check";
+    req.open("GET",url,true);
+    req.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            if(this.responseText == 'reserve'){
+                button.appendChild(document.createTextNode("Reserve"));
+                button.addEventListener('click',() => reserve(),false);
+            }
+            else if(this.responseText == 'release'){
+                button.appendChild(document.createTextNode("Release"));
+                button.addEventListener('click',() => release(),false);
+            }
+        }
+    }
+    req.send();
+    
 },false);
 
 function renderDescription(text){
     book = JSON.parse(text);
-    console.log(book);
     var title = document.getElementsByClassName('title');
     for(element of title){
         element.appendChild(document.createTextNode(book.title));
     }
     
     var cover = document.getElementById("cover");
-    cover.alt = "Cover of "+book['title'];
+    cover.alt = "Cover of "+book.title;
     cover.src = book.url;
     
     var author = document.getElementById("author");
@@ -45,43 +65,27 @@ function renderDescription(text){
     
 }
 function reserve(){
-    if(book["availableCopies"]> 0){
+    if(book.availableCopies > 0){
         var req = new XMLHttpRequest()
         var url = window.location.href+"/reserve";
+
         req.open("GET",url,true);
-        req.onreadystatechange(function() {
+        req.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                reserveBook(this.responseText);
+                reserveBook();
             };
-        })
+        }
+        req.send();
     }
     else{
         alert("Unfortunately there are no longer any copies of this book available.");
     }
 }
-function renderButton(){
-    if (reserved){
-        document.getElementById('unreserve').style.display = 'block';
+function reserveBook(response){
+    if(response){
+        console.log(response);
     }
     else{
-        document.getElementById('reserve').style.display = 'block';
-    }
-}
-function reservedBook(text){
-    if(text){
-        book['availableCopies'] -= 1;
-        var availableCopies = document.getElementById('availableCopies');
-        availableCopies.lastChild.textContent = book['availableCopies'];
-        reserved= true;
-    }
-    else{
-        alert("Unfortunately there are no longer any copies of this book available.")
-    }
-}
-function unreservedBook(){
-    book['availableCopies'] -= 1;
-    var availableCopies = document.getElementById('availableCopies');
-    availableCopies.lastChild.textContent = book['availableCopies'];
-    reserved= false;
-
+        alert("Something went wrong.");
+    } 
 }

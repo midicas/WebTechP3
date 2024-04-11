@@ -70,16 +70,17 @@ class book{
             });
         });
     }
-    static async reserve(){
+    static async reserve(id){
         return new Promise((resolve, reject) => {
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
                     reject(err);
                 }
+                console.log("Connection successfull");
             });
 
             let sqlStatement = "UPDATE books SET AVAILABLECOPIES = AVAILABLECOPIES-1 WHERE ID = ?";
-            db.run(sqlStatement,this.id, (err, result) => {
+            db.run(sqlStatement,id, (err, result) => {
                 db.close();
                 if (err) {
                     reject(err);

@@ -1,6 +1,6 @@
 var books;
 var start = 1;
-var range = 10;
+var range = 1;
 var max = Number.MAX_SAFE_INTEGER;
 
 window.addEventListener("load",function(){

@@ -40,7 +40,7 @@ for (bookie of booksArray){
 main()
 
 async function main(){
-    /*const testUser = new user(1,"Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
+    /*const testUser = new user("Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
     await testUser.addToDB();
     await testUser.fetch("rubendepuben");*/
 

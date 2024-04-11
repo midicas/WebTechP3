@@ -23,6 +23,7 @@ router.get('/profile', isLoggedIn, (req, res) => {
 });
 
 
+
 // User Login functionality:
 router.get('/login', function(req, res) {
   res.render('login', {pageTitle : 'Login'});
@@ -33,10 +34,9 @@ router.post('/authenticate', async function(req, res) {
     let userName = req.body.username;
     let passWord = req.body.password;
     let IsMatch = false;
-
     // fetch user object from database based on username:
     let userObj = await user.fetch(userName);
-    console.log(userObj);
+    
     if (userObj !== null){
       // Compare the sent password with the hash in the user object
       IsMatch = (userObj.password == passWord);
@@ -71,7 +71,7 @@ router.post('/signup', async function(req, res) {
   let passWord = req.body.password;
 
   //Try to make a user object from the information:
-  userObj = new user(1, firstName + " " + lastName, emailAddress, userName, passWord, address);
+  userObj = new user(firstName + " " + lastName, emailAddress, userName, passWord, address);
 
 
   // If creating an object failed send a status back. TODO

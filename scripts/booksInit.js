@@ -46,13 +46,13 @@ const createBooksTable = () => {
 const createUsersTable = () => {
     const tableStatement = `
         CREATE TABLE IF NOT EXISTS users (
-            ID INTEGER PRIMARY KEY,
-            NAME TEXT,
+            NAME PRIMARY TEXT,
             EMAIL TEXT,
             USERNAME TEXT,
             PASSWORD TEXT,
             ADDRESS TEXT,
-            RESERVATION_HISTORY TEXT
+            RESERVATION_HISTORY TEXT,
+            CURRENT_RESERVATIONS TEXT,
         )`;
     db.run(tableStatement, (err) => {
         if (err) {
