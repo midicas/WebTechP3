@@ -64,11 +64,9 @@ class user{
                 } else {
                     console.log("Connection Successful");
                     let sqlStatement = "UPDATE users SET CURRENT_RESERVATIONS = ? WHERE USERNAME = ?";
-                    console.log(JSON.stringify(this.currentReservation));
                     db.run(sqlStatement, [JSON.stringify(this.currentReservation), this.username], (err, result) => {
                         db.close();
                         if (err) {
-                            console.error(err);
                             reject(err);
                         }
                         resolve();

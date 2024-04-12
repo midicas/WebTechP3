@@ -70,25 +70,47 @@ class book{
             });
         });
     }
-    static async reserve(id){
+    async reserve() {
         return new Promise((resolve, reject) => {
+            this.availableCopies -= 1;
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
                     reject(err);
+                } else {
+                    console.log("Connection Successful");
+                    let sqlStatement = "UPDATE books SET AVAILABLECOPIES = ? WHERE ID = ?";
+                    db.run(sqlStatement, [this.availableCopies,this.id], (err, result) => {
+                        db.close();
+                        if (err) {
+                            console.error(err);
+                            reject(err);
+                        }
+                        resolve();
+                    });
                 }
-                console.log("Connection successfull");
-            });
-
-            let sqlStatement = "UPDATE books SET AVAILABLECOPIES = AVAILABLECOPIES-1 WHERE ID = ?";
-            db.run(sqlStatement,id, (err, result) => {
-                db.close();
-                if (err) {
-                    reject(err);
-                }
-                resolve();
             });
         });
-
+    }
+    async release() {
+        return new Promise((resolve, reject) => {
+            this.availableCopies += 1;
+            let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log("Connection Successful");
+                    let sqlStatement = "UPDATE books SET AVAILABLECOPIES = ? WHERE ID = ?";
+                    db.run(sqlStatement, [this.availableCopies,this.id], (err, result) => {
+                        db.close();
+                        if (err) {
+                            console.error(err);
+                            reject(err);
+                        }
+                        resolve();
+                    });
+                }
+            });
+        });
     }
 }
 
