@@ -29,7 +29,8 @@ router.post("/books",async (req,res) =>{
     // Extract the history list from the request body
     const { history } = req.body;
     var books = await book.fetch(history);
-    var resData = books.map(book => ({"id": book.id, "title": book.title}));
+    var resData = history.map(id => ({ id: id, title: books.find(book => book.id === id).title }));
+    console.log(resData);
 
     res.send(resData);
 } 

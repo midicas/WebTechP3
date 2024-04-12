@@ -107,7 +107,6 @@ router.get('/books/description/:bookID/release',async function(req,res,next){
   //Connect to database for users and book
   //Add to reservation history of user
   //Subtract from available copies from book.
-  console.log(req.params.bookID);
   if (req.session && req.session.user) { 
 
     let bookID = parseInt(req.params.bookID);
@@ -116,7 +115,7 @@ router.get('/books/description/:bookID/release',async function(req,res,next){
     
       await bookObj.release();
       let userObj = await user.fetch(req.session.user);
-      await userObj.release(bookID)
+      await userObj.release(bookID);
       res.send((bookObj.availableCopies).toString());
   }
   else{

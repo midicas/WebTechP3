@@ -48,7 +48,10 @@ async function renderHistory(history,section){
                 var link = document.createElement('a');
                 link.href = "/books/description/"+book.id;
                 link.appendChild(document.createTextNode(book.title));
-                section.appendChild(link);
+                
+                var p = document.createElement('p');
+                section.appendChild(p);
+                p.appendChild(link);
             }
       };
     }
