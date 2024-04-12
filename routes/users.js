@@ -88,8 +88,6 @@ router.post('/signup', async function(req, res) {
   //Try to make a user object from the information:
   let hashPW = await bcrypt.hash(passWord, 13);
   userObj = new user(firstName + " " + lastName, emailAddress, userName, hashPW, address);
-
-
   // If creating an object failed send a status back. TODO
 
   // else add the user to the db and add userID to the session directly.
