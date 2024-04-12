@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 const book = require("../objects/book"); 
 const user = require("../objects/user");
-var db = new sqlite3.Database("../database/books.db", (err) => {
+/*var db = new sqlite3.Database("../database/books.db", (err) => {
     if (err) {
         
         return console.error(err.message);
@@ -33,7 +33,7 @@ booksArray = [
 
 for (bookie of booksArray){
     bookie.addToDB();
-}
+}*/
 
 // add test user to db
 
@@ -43,9 +43,18 @@ async function main(){
     /*const testUser = new user("Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
     await testUser.addToDB();
     await testUser.fetch("rubendepuben");*/
-
-    const testBook = await book.fetch(1,10);
-    console.log(testBook);
+    console.log(JSON.parse('[]'));
+    
+    var testUser = new user("Cas Bouwman","casbouwman02@gmail.com",'cas','hallo','1234 somewhere av');
+    await testUser.addToDB();
+    await testUser.reserve(1);
+    await testUser.reserve(2);
+    testUser = await user.fetch('cas');
+    console.log(testUser);
+    await testUser.release(1);
+    testUser = await user.fetch('cas');
+    console.log(testUser);
+    
 }
 
 

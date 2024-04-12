@@ -46,13 +46,13 @@ const createBooksTable = () => {
 const createUsersTable = () => {
     const tableStatement = `
         CREATE TABLE IF NOT EXISTS users (
-            NAME PRIMARY TEXT,
+            NAME TEXT PRIMARY KEY,
             EMAIL TEXT,
             USERNAME TEXT,
             PASSWORD TEXT,
             ADDRESS TEXT,
             RESERVATION_HISTORY TEXT,
-            CURRENT_RESERVATIONS TEXT,
+            CURRENT_RESERVATIONS TEXT
         )`;
     db.run(tableStatement, (err) => {
         if (err) {
@@ -63,6 +63,14 @@ const createUsersTable = () => {
     });
 };
 
+db.run(`DROP TABLE IF EXISTS users`,(err) =>{
+    if(err){
+        console.error(err.message);
+    }
+    else{
+        console.log("Deleted");
+    }
+})
 // Initialize tables
 createBooksTable();
 createUsersTable();
