@@ -17,8 +17,9 @@ router.get('/books/:start/:range',async function(req,res,next){
   //Fetch Books from database
   var start = parseInt(req.params.start);
   var range = parseInt(req.params.range);
+  const values = Array.from({ length: range }, (_, i) => start + i);
   try {
-    const bookObj = await book.fetch(start,start+range-1);
+    const bookObj = await book.fetch(values);
     if (bookObj) {
         res.send(bookObj);
     } else {
@@ -33,7 +34,7 @@ router.get('/books/:start/:range',async function(req,res,next){
 router.get('/books/description/:bookID/get', async function(req, res, next) {
   try {
       const bookID = req.params.bookID;
-      const bookObj = await book.fetch(parseInt(bookID), parseInt(bookID)); // Pass the same ID for both start and end
+      const bookObj = await book.fetch([parseInt(bookID)]); // Pass the same ID for both start and end
 
       if (bookObj) {
           res.send(bookObj[0]);
@@ -82,7 +83,7 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
   if (req.session && req.session.user) { 
 
     let bookID = parseInt(req.params.bookID);
-    let bookObj = (await book.fetch(bookID,bookID))[0];
+    let bookObj = (await book.fetch([bookID]))[0];
     
     if (bookObj.availableCopies > 0){
       await bookObj.reserve();
@@ -106,22 +107,17 @@ router.get('/books/description/:bookID/release',async function(req,res,next){
   //Connect to database for users and book
   //Add to reservation history of user
   //Subtract from available copies from book.
-
+  console.log(req.params.bookID);
   if (req.session && req.session.user) { 
 
     let bookID = parseInt(req.params.bookID);
-    let bookObj = (await book.fetch(bookID,bookID))[0];
+    console.log(bookID);
+    let bookObj = (await book.fetch([bookID]))[0];
     
-    if (bookObj.availableCopies > 0){
       await bookObj.release();
       let userObj = await user.fetch(req.session.user);
       await userObj.release(bookID)
       res.send((bookObj.availableCopies).toString());
-      }
-    
-    else{
-      res.send("Not Available");
-    }
   }
   else{
     console.log("redirect");

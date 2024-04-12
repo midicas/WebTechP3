@@ -39,18 +39,16 @@ class book{
         })
         db.close();
     }
-    static async fetch(start,end) {
+    static async fetch(ids) {
         return new Promise((resolve, reject) => {
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
-
                     reject(err);
                 }
             });
-            console.log("Connection successfull");
-            let sqlStatement = "SELECT * from books WHERE ID BETWEEN ? AND ?";
-            db.all(sqlStatement,[start,end], (err, result) => {
-            
+            console.log("Connection successful");
+            let sqlStatement = "SELECT * from books WHERE ID IN (" + ids.map(() => "?").join(",") + ")";
+            db.all(sqlStatement, ids, (err, result) => {
                 if (err) {
                     reject(err);
                 }
