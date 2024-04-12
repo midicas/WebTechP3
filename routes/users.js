@@ -30,7 +30,6 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/authenticate', async function(req, res) {
-    const testPassword = "hoihoi";
     let userName = req.body.username;
     let passWord = req.body.password;
     let IsMatch = false;
@@ -39,8 +38,7 @@ router.post('/authenticate', async function(req, res) {
     
     if (userObj !== null){
       // Compare the sent password with the hash in the user object
-      IsMatch = (userObj.password == passWord);
-      //IsMatch = await bcrypt.compare(Password, user.password);
+      IsMatch = await bcrypt.compare(passWord, userObj.password);
     }
       
 
@@ -50,9 +48,9 @@ router.post('/authenticate', async function(req, res) {
     }
 
     else{
-      //TODO should load the userID in the req.session.username
+      //load the username in the req.session.user
       req.session.user = userObj.username;
-      res.send(userName + " " + passWord); //TODO remove;
+      res.end();
     }
 });
 
@@ -71,7 +69,8 @@ router.post('/signup', async function(req, res) {
   let passWord = req.body.password;
 
   //Try to make a user object from the information:
-  userObj = new user(firstName + " " + lastName, emailAddress, userName, passWord, address);
+  let hashPW = await bcrypt.hash(passWord, 13);
+  userObj = new user(firstName + " " + lastName, emailAddress, userName, hashPW, address);
 
 
   // If creating an object failed send a status back. TODO
