@@ -1,7 +1,8 @@
 var express = require('express');
 var bcrypt = require("bcrypt");
 var router = express.Router();
-const user = require("../objects/user"); 
+const user = require("../objects/user");
+const book = require("../objects/book"); 
 
 
 function isLoggedIn(req, res, next) {
@@ -12,15 +13,31 @@ function isLoggedIn(req, res, next) {
   res.redirect('/users/login');
 }
 /* GET users listing. */
-router.get('/', isLoggedIn, function(req, res, next) {
-  res.redirect("/users/profile")
-});
+router.get('/', isLoggedIn, async function(req, res, next) {
+  const userObj = await user.fetch(req.session.user);
 
+  res.send(userObj);
+});
 //Render profile page
 router.get('/profile', isLoggedIn, (req, res) => {
   //TODO: Give user through req.session.userName.
   res.render('profile',{pageTitle:"Profile Page"});
 });
+
+router.post("/books",async (req,res) =>{
+  try {
+    // Extract the history list from the request body
+    const { history } = req.body;
+    var books = await book.fetch(history);
+    var resData = books.map(book => ({"id": book.id, "title": book.title}));
+
+    res.send(resData);
+} 
+catch (error) {
+    console.error("Error processing history:", error);
+    res.status(500).send("Internal Server Error");
+}
+})
 
 
 

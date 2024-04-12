@@ -1,4 +1,4 @@
-var book;
+
 window.addEventListener("load",function(){
 
     var req = new XMLHttpRequest();
@@ -12,13 +12,11 @@ window.addEventListener("load",function(){
     req.send();
 
     var button = document.getElementById("reserve");
-    console.log(button);
     check = new XMLHttpRequest();
     checkUrl = window.location.href+"/check";
     check.open("GET",checkUrl,true);
     check.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
-            console.log(this.responseText);
             if(this.responseText == 'reserve'){
                 button.appendChild(document.createTextNode("Reserve"));
                 button.addEventListener('click',() => reserve(),false);
@@ -83,7 +81,7 @@ function reserve(){
 }
 function release(){
     var req = new XMLHttpRequest();
-    var url = window.location.hreft+"/release";
+    var url = window.location.href+"/release";
 
     req.open("GET",url,true)
     req.onreadystatechange = function(){
@@ -98,6 +96,7 @@ function release(){
             button.addEventListener('click', () => reserve());
         }
     }
+    req.send();
 }
 function reserveBook(response){
     if (response == 'redirect'){

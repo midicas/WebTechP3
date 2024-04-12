@@ -1,5 +1,25 @@
 extends layout 
 
 block content 
-    h1 PROFILE page
-    p UserID #{pageTitle}
+    script(src="/scripts/profile.js")
+    article#info 
+        section
+            h1 Personal Information 
+            table
+                tr
+                    td User Name:
+                    td#username
+                tr 
+                    td Full Name:
+                    td#fullname
+                tr 
+                    td Email address:
+                    td#email
+                tr
+                    td Address:
+                    td#address
+    article#books 
+        section#history
+            h1 Reservation history:
+        section#current
+            h1 Current reservations:

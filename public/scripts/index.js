@@ -26,7 +26,6 @@ function pagination(further){
             start = range + start;
         }
         else {
-            console.log('asdf');
             return;
         }
     }
@@ -59,7 +58,7 @@ function renderCatalogue(text){
     if(books.length < range){
         max = start+books.length-1;
     }
-    console.log(start+","+range+","+max);
+
     var buttons = document.getElementById('pagination');
     var list = document.createElement('ul');
     list.id = "catalogue";
