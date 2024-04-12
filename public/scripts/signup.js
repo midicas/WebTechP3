@@ -1,3 +1,5 @@
+var signupFailed = false;
+
 window.addEventListener("load", function() {
     document.getElementById("register-form").addEventListener("submit", myregister, true);
 }, false);
@@ -14,7 +16,7 @@ function myregister(e) {
 
     // Check if all fields are filled in:
     if (firstName === "" || lastName === "" || emailAdress === "" || address === "" || userName === "" || passWord === ""){
-        alert("Please fill in both the username and password!");
+        alert("Please fill in all of the fields before submitting!");
         
     }
     else{
@@ -35,6 +37,24 @@ function post(url, firstName, lastName, emailAdress, address, userName, passWord
         // Open the users page if the status is 200
         if (req.readyState === 4 && req.status === 200){
             window.open('/users/profile', '_self');
+        }
+
+        // Empty the username and add a message:
+        if (req.readyState === 4 && req.status === 409){
+            let userName = document.getElementById("username");
+            let registerSection = document.getElementById("register-section");
+
+            userName.value = "";
+            
+            // check if the previous login was failed already:
+            if (!signupFailed){
+                let p = document.createElement('p');
+                p.classList.add('signup-failed');
+                let text = document.createTextNode("The username is already taken, please try another one!");
+                p.appendChild(text);
+                registerSection.appendChild(p);
+                signupFailed = true;
+            }
         }
     }
 

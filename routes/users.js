@@ -85,16 +85,23 @@ router.post('/signup', async function(req, res) {
   let userName = req.body.username;
   let passWord = req.body.password;
 
-  //Try to make a user object from the information:
-  let hashPW = await bcrypt.hash(passWord, 13);
-  userObj = new user(firstName + " " + lastName, emailAddress, userName, hashPW, address);
-  // If creating an object failed send a status back. TODO
+  //check if the username is not already in use:
+  let userNameCheck = await user.fetch(userName);
+  if (userNameCheck !== null){
+    res.status(409).send("This username is already taken!");
+  }
+  else{
+    //Try to make a user object from the information:
+    let hashPW = await bcrypt.hash(passWord, 13);
+    userObj = new user(firstName + " " + lastName, emailAddress, userName, hashPW, address);
 
-  // else add the user to the db and add userID to the session directly.
-  await userObj.addToDB();
+    //add user to the database:
+    await userObj.addToDB();
 
-  req.session.user = userName;
-  res.end();
+    req.session.user = userName;
+    res.end();
+  }
+  
 });
 
 module.exports = router;
