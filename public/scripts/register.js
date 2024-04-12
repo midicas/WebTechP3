@@ -1,5 +1,3 @@
-var signupFailed = false;
-
 window.addEventListener("load", function() {
     document.getElementById("register-form").addEventListener("submit", myregister, true);
 }, false);
@@ -15,12 +13,12 @@ function myregister(e) {
 
 
     // Check if all fields are filled in:
-    if (firstName === "" || lastName === "" || emailAdress === "" || address === "" || userName === "" || passWord === ""){
-        alert("Please fill in all of the fields before submitting!");
+    if (firstName === "" || lastName === "" || emailAdress === "" || adress === "" || userName === "" || passWord === ""){
+        alert("Please fill in both the username and password!");
         
     }
     else{
-        var url = 'signup';
+        var url = 'register';
         post(url, firstName, lastName, emailAdress, adress, userName, passWord);
     }
     e.preventDefault();
@@ -36,28 +34,9 @@ function post(url, firstName, lastName, emailAdress, adress, userName, passWord)
     req.onreadystatechange = function() {
         // Open the users page if the status is 200
         if (req.readyState === 4 && req.status === 200){
-            window.open('/users/profile', '_self');
-        }
-
-        // Empty the username and add a message:
-        if (req.readyState === 4 && req.status === 409){
-            let userName = document.getElementById("username");
-            let registerSection = document.getElementById("register-section");
-
-            userName.value = "";
-            
-            // check if the previous login was failed already:
-            if (!signupFailed){
-                let p = document.createElement('p');
-                p.classList.add('signup-failed');
-                let text = document.createTextNode("The username is already taken, please try another one!");
-                p.appendChild(text);
-                registerSection.appendChild(p);
-                signupFailed = true;
-            }
+            window.open('/users', '_self');
         }
     }
-
     var payLoad = JSON.stringify({
         'firstname': firstName,
         'lastname' : lastName,

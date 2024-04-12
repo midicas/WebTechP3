@@ -5,12 +5,11 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(name="description", content= "Page to sign up for a library account")
     title= pageTitle
-    link(rel = "icon", type="image/png", href="/assets/img/circle-of-books-favicon.png")
     link(rel='stylesheet', href='/stylesheets/main_style.css')
     link(rel='stylesheet', href='/stylesheets/nav_style.css')
     link(rel='stylesheet', href='/stylesheets/register_style.css')
     script(src="/scripts/nav.js")
-    script(src="/scripts/signup.js")
+    script(src="/scripts/register.js")
   body
   header#page-header
       h1 Circle of Books Library
@@ -30,7 +29,7 @@ html
         br
         input(type="text", id="email")
         br
-        label(for='address') Adress:
+        label(for='adress') Adress:
         br
         input(type="text", id="adress")
         br
@@ -43,6 +42,3 @@ html
         input(type="password", id="password")
         br
         input(type="submit", value="Create Account").button
-      p 
-        | Already signed up? 
-        a(href="./login") Login here!
