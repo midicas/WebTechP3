@@ -47,13 +47,29 @@ router.get('/books/description/:bookID/get', async function(req, res, next) {
 });
 
 router.get('/books/description/:bookID/check',async function(req,res,next){
-  if (req.session && req.session.user){
-    const userObj = await user.fetch(req.session.user);
-    if (req.params.bookID in userObj.currentReservation){
-      res.send('release');
+  if (req.session && req.session.user) {
+    try {
+        // Fetch user object based on session user ID
+        const userObj = await user.fetch(req.session.user);
+        // Check if the book ID exists in user's current reservations
+        const bookID = parseInt(req.params.bookID);
+        const isReserved = userObj.currentReservation.includes(bookID);
+        
+        if (isReserved) {
+            console.log("Book is reserved by the user");
+            res.send("release"); // Send "release" if the book is reserved
+        } else {
+            console.log("Book is not reserved by the user");
+            res.send("reserve"); // Send "reserve" if the book is not reserved
+        }
+    } catch (error) {
+        console.error("Error occurred while checking reservation:", error);
+        res.status(500).send("Error occurred while checking reservation"); // Handle errors gracefully
     }
-  }
-  res.send("reserve");
+} else {
+    // Session or user not available, redirect or handle as appropriate
+    res.send("reserve");
+}
 });
 
 
@@ -66,13 +82,13 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
   if (req.session && req.session.user) { 
 
     let bookID = parseInt(req.params.bookID);
-    let books = await book.fetch(bookID,bookID);
-    let bookObj = books[0];
-
+    let bookObj = (await book.fetch(bookID,bookID))[0];
+    
     if (bookObj.availableCopies > 0){
-      await book.reserve(bookID);
-      await user.reserve(bookID,req.session.user);
-      res.send((bookObj.availableCopies - 1).toString());
+      await bookObj.reserve();
+      let userObj = await user.fetch(req.session.user);
+      await userObj.reserve(bookID)
+      res.send((bookObj.availableCopies).toString());
       }
     
     else{
@@ -80,6 +96,35 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
     }
   }
   else{
+    console.log("redirect");
+    res.send('redirect');
+  }
+});
+
+router.get('/books/description/:bookID/release',async function(req,res,next){
+  //Update user data
+  //Connect to database for users and book
+  //Add to reservation history of user
+  //Subtract from available copies from book.
+
+  if (req.session && req.session.user) { 
+
+    let bookID = parseInt(req.params.bookID);
+    let bookObj = (await book.fetch(bookID,bookID))[0];
+    
+    if (bookObj.availableCopies > 0){
+      await bookObj.release();
+      let userObj = await user.fetch(req.session.user);
+      await userObj.release(bookID)
+      res.send((bookObj.availableCopies).toString());
+      }
+    
+    else{
+      res.send("Not Available");
+    }
+  }
+  else{
+    console.log("redirect");
     res.send('redirect');
   }
 });

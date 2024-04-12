@@ -1,5 +1,4 @@
 var book;
-var reserved = false;
 window.addEventListener("load",function(){
 
     var req = new XMLHttpRequest();
@@ -14,10 +13,10 @@ window.addEventListener("load",function(){
 
     var button = document.getElementById("reserve");
     console.log(button);
-    req = new XMLHttpRequest();
-    url = window.location.href+"/check";
-    req.open("GET",url,true);
-    req.onreadystatechange = function(){
+    check = new XMLHttpRequest();
+    checkUrl = window.location.href+"/check";
+    check.open("GET",checkUrl,true);
+    check.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
             console.log(this.responseText);
             if(this.responseText == 'reserve'){
@@ -30,7 +29,7 @@ window.addEventListener("load",function(){
             }
         }
     }
-    req.send();
+    check.send();
     
 },false);
 
@@ -72,7 +71,8 @@ function reserve(){
         req.open("GET",url,true);
         req.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                reserveBook();
+
+                reserveBook(this.responseText);
             };
         }
         req.send();
@@ -81,11 +81,36 @@ function reserve(){
         alert("Unfortunately there are no longer any copies of this book available.");
     }
 }
+function release(){
+    var req = new XMLHttpRequest();
+    var url = window.location.hreft+"/release";
+
+    req.open("GET",url,true)
+    req.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200){
+            var button = document.getElementById('reserve');
+            button.textContent = "";
+            button.appendChild(document.createTextNode("Reserve"));
+            var availableCopies = document.getElementById("availableCopies");
+            availableCopies.textContent = "";
+            availableCopies.appendChild(document.createTextNode(this.responseText));
+            button.removeEventListener('click',() => release());
+            button.addEventListener('click', () => reserve());
+        }
+    }
+}
 function reserveBook(response){
-    if(response){
-        console.log(response);
+    if (response == 'redirect'){
+        window.location.href = '/users/login';
     }
     else{
-        alert("Something went wrong.");
-    } 
+        var button = document.getElementById('reserve');
+        button.textContent = "";
+        button.appendChild(document.createTextNode("Release"));
+        var availableCopies = document.getElementById("availableCopies");
+        availableCopies.textContent = "";
+        availableCopies.appendChild(document.createTextNode(response));
+        button.removeEventListener('click',() => reserve());
+        button.addEventListener('click', () => release());
+    }
 }

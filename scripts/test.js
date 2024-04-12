@@ -46,21 +46,6 @@ async function main(){
     
     var testUser = new user("Cas Bouwman","casbouwman02@gmail.com",'cas','hallo','1234 somewhere av');
     await testUser.addToDB();
-
-    var testBook = (await book.fetch(1,10))[0];
-    console.log(testBook.availableCopies);
-    await testBook.reserve();
-    await testUser.reserve(1);
-
-    testBook = (await book.fetch(1,10))[0];
-    console.log(testBook.availableCopies);
-
-    await testBook.release();
-    await testUser.release(1);
-
-    testBook = (await book.fetch(1,10))[0];
-    console.log(testBook.availableCopies);
-
     
 }
 
