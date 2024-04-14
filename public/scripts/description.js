@@ -52,7 +52,7 @@ function renderDescription(text){
     publisher.append(document.createTextNode(book.publisher));
     
     var yearOfPublishing = document.getElementById("yearOfPublishing");
-    yearOfPublishing.append(document.createTextNode(book.yearOfPublishing));
+    yearOfPublishing.append(document.createTextNode(book.year));
     
     var availableCopies = document.getElementById("availableCopies");
     availableCopies.append(document.createTextNode(book.availableCopies));

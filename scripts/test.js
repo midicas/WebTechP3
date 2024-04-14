@@ -483,13 +483,6 @@ for (bookie of booksArray){
 main()
 
 async function main(){
-    /*const testUser = new user("Ruben", "ruben@coolzijn.nl", "rubendepuben", "adminadmin", "1234 negro arroya lane NM", "jeweetzelf");
-    await testUser.addToDB();
-    await testUser.fetch("rubendepuben");*/
-    
-    var testUser = new user("Cas Bouwman","casbouwman02@gmail.com",'cas','hallo','1234 somewhere av');
-    await testUser.addToDB();
-    
 }
 
 

@@ -16,7 +16,10 @@
     }
     
 }
-
+#cover{
+    width:80%;
+    padding: 10px;
+}
 #reserve{
     width:100%;
     float:left;
