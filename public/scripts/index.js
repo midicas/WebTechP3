@@ -105,6 +105,7 @@ function renderCatalogue(text){
 // Function that makes the list elements clickable and sents the user to the bookpage.
 function addLink(id){
     var li = document.getElementById('book'+id);
+    li.style.cursor = 'pointer';
     li.addEventListener('click',function(){
         window.location.href = 'books/description/'+id;
     },false);
