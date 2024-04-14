@@ -39,7 +39,6 @@ function post(url, userName, passWord){
             let passWord = document.getElementById("password");
             let loginSection = document.getElementById("login-section");
 
-            userName.value = "";
             passWord.value = "";
             
             // check if the previous login was failed already:
