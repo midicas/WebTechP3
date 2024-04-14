@@ -82,10 +82,11 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
 
     let bookID = parseInt(req.params.bookID);
     let bookObj = (await book.fetch([bookID]))[0];
-    
-    if (bookObj.availableCopies > 0){
+    let userObj = await user.fetch(req.session.user);
+
+    if (userObj.currentReservation.includes(bookObj.id) && bookObj.availableCopies > 0){
+      
       await bookObj.reserve();
-      let userObj = await user.fetch(req.session.user);
       await userObj.reserve(bookID)
       res.send((bookObj.availableCopies).toString());
       }

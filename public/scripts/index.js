@@ -99,7 +99,6 @@ function renderCatalogue(text){
 
 function addLink(id){
     var li = document.getElementById('book'+id);
-    console.log("Added link");
     li.addEventListener('click',function(){
         window.location.href = 'books/description/'+id;
     },false);
