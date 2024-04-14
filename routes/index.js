@@ -84,7 +84,7 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
     let bookObj = (await book.fetch([bookID]))[0];
     let userObj = await user.fetch(req.session.user);
 
-    if (userObj.currentReservation.includes(bookObj.id) && bookObj.availableCopies > 0){
+    if (!userObj.currentReservation.includes(bookObj.id) && bookObj.availableCopies > 0){
       
       await bookObj.reserve();
       await userObj.reserve(bookID)
