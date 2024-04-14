@@ -1,5 +1,12 @@
-// This file is dedicated to defining a structure for a book object. A book contains a title, author, description etc but also number available. It has some useful methods for interacting with the books database. 
+// This file is dedicated to defining a structure for a book object. 
+// A book contains a title, author, description etc but also number 
+// available. It has some useful methods for interacting with the books database. 
+
+
 const sqlite3 = require("sqlite3").verbose();
+
+
+// Book object class:
 class book{
     //constructor and attributes
     constructor(id, title, url, author, description, year, publisher, genre,availableCopies){
@@ -14,7 +21,7 @@ class book{
         this.availableCopies = availableCopies;
     }
 
-    // log this book to db
+    // log a book object to the database:
     addToDB() {
         let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
             if (err){
@@ -39,6 +46,8 @@ class book{
         })
         db.close();
     }
+
+    // fetch books from the database based on ids. returns the book objects.
     static async fetch(ids) {
         return new Promise((resolve, reject) => {
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
@@ -46,7 +55,7 @@ class book{
                     reject(err);
                 }
             });
-            console.log("Connection successful");
+            console.log("Connection to the Database successful");
             let sqlStatement = "SELECT * from books WHERE ID IN (" + ids.map(() => "?").join(",") + ")";
             db.all(sqlStatement, ids, (err, result) => {
                 if (err) {
@@ -68,6 +77,8 @@ class book{
             });
         });
     }
+
+    // reservation logic. Updates the reservation information about the book like available copies to the database:
     async reserve() {
         return new Promise((resolve, reject) => {
             this.availableCopies -= 1;
@@ -75,7 +86,7 @@ class book{
                 if (err) {
                     reject(err);
                 } else {
-                    console.log("Connection Successful");
+                    console.log("Connection to the Database Successful");
                     let sqlStatement = "UPDATE books SET AVAILABLECOPIES = ? WHERE ID = ?";
                     db.run(sqlStatement, [this.availableCopies,this.id], (err, result) => {
                         db.close();
@@ -89,6 +100,8 @@ class book{
             });
         });
     }
+
+    // release logic. Updates the release of the book in the database.
     async release() {
         return new Promise((resolve, reject) => {
             this.availableCopies += 1;
@@ -96,7 +109,7 @@ class book{
                 if (err) {
                     reject(err);
                 } else {
-                    console.log("Connection Successful");
+                    console.log("Connection to the Database Successful");
                     let sqlStatement = "UPDATE books SET AVAILABLECOPIES = ? WHERE ID = ?";
                     db.run(sqlStatement, [this.availableCopies,this.id], (err, result) => {
                         db.close();

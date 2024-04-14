@@ -1,3 +1,5 @@
+// This is the script of the profile page that renders the profile information using ajax and has a release option for currently reservated books.
+
 
 window.addEventListener("load",function(){
     var req = new XMLHttpRequest();
@@ -12,6 +14,7 @@ window.addEventListener("load",function(){
     
 },true)
 
+// this function reders the profile by being given a user object in json string format:
 async function renderProfile(text){
     const userObj = await JSON.parse(text);
     
@@ -35,6 +38,7 @@ async function renderProfile(text){
     renderHistory(userObj.currentReservation,current);
 }
 
+//This function renders the history of the user:
 async function renderHistory(history,section){
     var req = new XMLHttpRequest();
     var url = "/users/books";
@@ -66,6 +70,7 @@ async function renderHistory(history,section){
     req.send(requestData);
 }
 
+// this function handles the release logic of the currently reserved book buttons:
 async function release(id){
     var req = new XMLHttpRequest();
     var url = "/books/description/"+id+"/release";

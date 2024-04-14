@@ -1,3 +1,6 @@
+// This is the script for the index/catalogue page. 
+//it handles the ajax loading and pagination and rendering the books.
+
 var books;
 var start = 1;
 var range = 10;
@@ -17,7 +20,7 @@ window.addEventListener("load",function(){
 
 },false);
 
-
+// Function that fetches the books form the server to fill the current "page" with.
 function pagination(further){
     var main = document.getElementsByTagName('main')
     main.textContent = "";
@@ -53,6 +56,8 @@ function pagination(further){
     }
     req.send();
 }
+
+//Function that does the actual handling given the json string of the catalogue response:
 function renderCatalogue(text){
     var books = JSON.parse(text);
     if(books.length < range){
@@ -97,6 +102,7 @@ function renderCatalogue(text){
     }
 }
 
+// Function that makes the list elements clickable and sents the user to the bookpage.
 function addLink(id){
     var li = document.getElementById('book'+id);
     li.addEventListener('click',function(){

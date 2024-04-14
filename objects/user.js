@@ -1,5 +1,9 @@
-// This file is used to describe the structure of the user object, so a user must have an id, username, password etc. It also contains some useful functions for the user database.
+// This file is used to describe the structure of the user object, so a user must have an id, 
+// username, password etc. It also contains some useful methods for the user database.
 const sqlite3 = require("sqlite3").verbose();
+
+
+// user object class:
 class user{
     // attributes // constructor
     constructor(name, email, username, password, address, reservationHistory = [],currentReservation = []){
@@ -11,7 +15,8 @@ class user{
         this.reservationHistory = reservationHistory;
         this.currentReservation = currentReservation;
     }
-    // log to db
+
+    // log a user to the database:
     async addToDB() {
         return new Promise((resolve, reject) => {
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {
@@ -32,7 +37,8 @@ class user{
             });
         });
     }
-    // reservation logic?
+
+    // reservation logic. handles the reserveravtion updates for the user object and communicates these with the db:
     async reserve(id) {
         return new Promise((resolve, reject) => {
             this.currentReservation.push(id);
@@ -41,7 +47,7 @@ class user{
                 if (err) {
                     reject(err);
                 } else {
-                    console.log("Connection Successful");
+                    console.log("Connection to the Database Successful");
                     let sqlStatement = "UPDATE users SET RESERVATION_HISTORY = ?, CURRENT_RESERVATIONS = ? WHERE USERNAME = ?";
                     db.run(sqlStatement, [JSON.stringify(this.reservationHistory),JSON.stringify(this.currentReservation), this.username], (err, result) => {
                         db.close();
@@ -55,6 +61,8 @@ class user{
             });
         });
     }
+    
+    // Release logic. Handles the release update of the user object and communicates these with the db:
     async release(id){
         return new Promise((resolve, reject) => {
             this.currentReservation.pop(id);
@@ -62,7 +70,7 @@ class user{
                 if (err) {
                     reject(err);
                 } else {
-                    console.log("Connection Successful");
+                    console.log("Connection to the Database Successful");
                     let sqlStatement = "UPDATE users SET CURRENT_RESERVATIONS = ? WHERE USERNAME = ?";
                     db.run(sqlStatement, [JSON.stringify(this.currentReservation), this.username], (err, result) => {
                         db.close();
@@ -77,7 +85,6 @@ class user{
     }
     
     // fetch user object from database function -> userobject, if no such user exists, return none/null
-    
     static async fetch(username) {
         return new Promise((resolve, reject) => {
             let db = new sqlite3.Database("database/books.db", sqlite3.OPEN_READWRITE, (err) => {

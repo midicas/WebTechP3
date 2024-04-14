@@ -1,10 +1,12 @@
+// This script is for the signup page and handles the ajax communication between the form and the server.
+
 var signupFailed = false;
 
 window.addEventListener("load", function() {
     document.getElementById("register-form").addEventListener("submit", myregister, true);
 }, false);
 
-
+// The eventhandler function that posts the user information to the server if the fields are good.
 function myregister(e) {
     var firstName = document.getElementById("firstname").value;
     var lastName = document.getElementById("lastname").value;
@@ -29,7 +31,7 @@ function myregister(e) {
    }
 
 
-
+// The post function that does the actual AJAX work. When the new user is handled by the server the browser is redirected. Else the user gets a message
 function post(url, firstName, lastName, emailAddress, address, userName, passWord){
     var req = new XMLHttpRequest();
 

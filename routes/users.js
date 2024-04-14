@@ -1,10 +1,13 @@
+// The router for the userprofile and login and signup all are of website/users urls.
+// It contains the profile route, login and authenitcation routes and the signup routes.
+
 var express = require('express');
 var bcrypt = require("bcrypt");
 var router = express.Router();
 const user = require("../objects/user");
 const book = require("../objects/book"); 
 
-
+// Function that checks if the user is logged in.
 function isLoggedIn(req, res, next) {
   if (req.session && req.session.user) {
     return next(); // User is authenticated, continue to the next middleware
@@ -12,18 +15,14 @@ function isLoggedIn(req, res, next) {
   // User is not authenticated, redirect to login page
   res.redirect('/users/login');
 }
-/* GET users listing. */
-router.get('/', isLoggedIn, async function(req, res, next) {
-  const userObj = await user.fetch(req.session.user);
 
-  res.send(userObj);
-});
-//Render profile page
+//Get the profile page
 router.get('/profile', isLoggedIn, (req, res) => {
   //TODO: Give user through req.session.userName.
   res.render('profile',{pageTitle:"Profile Page"});
 });
 
+// users/books for retrieving book titles form ids
 router.post("/books",async (req,res) =>{
   try {
     // Extract the history list from the request body
@@ -42,11 +41,12 @@ catch (error) {
 
 
 
-// User Login functionality:
+// Get the user login page:
 router.get('/login', function(req, res) {
   res.render('login', {pageTitle : 'Login'});
 });
 
+// The authenication functionallity
 router.post('/authenticate', async function(req, res) {
     let userName = req.body.username;
     let passWord = req.body.password;
@@ -73,11 +73,12 @@ router.post('/authenticate', async function(req, res) {
 });
 
 
-// User registry functionality:
+// Get the user signup page:
 router.get('/signup', function(req, res) {
   res.render('signup', {pageTitle : 'Signup'});
 });
 
+// The signup functionality:
 router.post('/signup', async function(req, res) {
   let firstName = req.body.firstname;
   let lastName = req.body.lastname;

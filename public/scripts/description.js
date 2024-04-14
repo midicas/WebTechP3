@@ -1,21 +1,23 @@
+//This is the script for the description page which handles 
+//the rendering of the description and reservation/release logic.
+
 
 window.addEventListener("load",function(){
-
-    var req = new XMLHttpRequest();
+    var getReq = new XMLHttpRequest();
     var url = window.location.href+"/get";
-    req.open("GET", url,true);
-    req.onreadystatechange = function() {
+    getReq.open("GET", url,true);
+    getReq.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             renderDescription(this.responseText)
       };
     }
-    req.send();
+    getReq.send();
 
     var button = document.getElementById("reserve");
-    check = new XMLHttpRequest();
+    var checkReq = new XMLHttpRequest();
     checkUrl = window.location.href+"/check";
-    check.open("GET",checkUrl,true);
-    check.onreadystatechange = function(){
+    checkReq.open("GET",checkUrl,true);
+    checkReq.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
             if(this.responseText == 'reserve'){
                 button.appendChild(document.createTextNode("Reserve"));
@@ -27,10 +29,11 @@ window.addEventListener("load",function(){
             }
         }
     }
-    check.send();
+    checkReq.send();
     
 },false);
 
+// This function renders the description of a book using the json string of its object:
 function renderDescription(text){
     book = JSON.parse(text);
     var title = document.getElementsByClassName('title');
@@ -61,6 +64,8 @@ function renderDescription(text){
     plot.appendChild(document.createTextNode(book.description));
     
 }
+
+// This function handles the reserve request to the server. Note that availability is doublechecked at the serverside too!
 function reserve(){
     if(book.availableCopies > 0){
         var req = new XMLHttpRequest()
@@ -79,6 +84,8 @@ function reserve(){
         alert("Unfortunately there are no longer any copies of this book available.");
     }
 }
+
+// This function handles the release request to the server and is an eventhandler of the button.
 function release(){
     var req = new XMLHttpRequest();
     var url = window.location.href+"/release";
@@ -98,6 +105,8 @@ function release(){
     }
     req.send();
 }
+
+// This function handles the response of the reservation on the clients browser
 function reserveBook(response){
     if (response == 'redirect'){
         window.location.href = '/users/login';

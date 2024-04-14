@@ -1,18 +1,16 @@
+// The main router for the index/catalogue page and the description page. It contains all the routers grouped together.
+
 var express = require('express');
 var router = express.Router();
 const user = require("../objects/user");
 const book = require("../objects/book");
 
-/* GET home page. */
+// Get the home page:
 router.get('/',function(req,res,next){
   res.render("index",{pageTitle:"Catalogue"});
 });
 
-//Pagination route
-router.get("/books/description/:bookID",(req,res,next)=>{
-  res.render('description',{pageTitle:"Description"});
-});
-
+// Get the book objects for the pagination:
 router.get('/books/:start/:range',async function(req,res,next){
   //Fetch Books from database
   var start = parseInt(req.params.start);
@@ -31,6 +29,12 @@ router.get('/books/:start/:range',async function(req,res,next){
 }
 });
 
+// Get the book description page:
+router.get("/books/description/:bookID",(req,res,next)=>{
+  res.render('description',{pageTitle:"Description"});
+});
+
+// Get the book description for rendering on the website.
 router.get('/books/description/:bookID/get', async function(req, res, next) {
   try {
       const bookID = req.params.bookID;
@@ -47,6 +51,7 @@ router.get('/books/description/:bookID/get', async function(req, res, next) {
   }
 });
 
+// Get the book check information (reserve or release) 
 router.get('/books/description/:bookID/check',async function(req,res,next){
   if (req.session && req.session.user) {
     try {
@@ -71,7 +76,7 @@ router.get('/books/description/:bookID/check',async function(req,res,next){
 }
 });
 
-
+// Reserve and get the reservation feedbackstatus:
 router.get('/books/description/:bookID/reserve',async function(req,res,next){
   //Update user data
   //Connect to database for users and book
@@ -84,7 +89,7 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
     let bookObj = (await book.fetch([bookID]))[0];
     let userObj = await user.fetch(req.session.user);
 
-    if (userObj.currentReservation.includes(bookObj.id) && bookObj.availableCopies > 0){
+    if (!userObj.currentReservation.includes(bookObj.id) && bookObj.availableCopies > 0){
       
       await bookObj.reserve();
       await userObj.reserve(bookID)
@@ -100,6 +105,7 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
   }
 });
 
+// Release and get the release feedbackstatus:
 router.get('/books/description/:bookID/release',async function(req,res,next){
   //Update user data
   //Connect to database for users and book

@@ -1,4 +1,6 @@
-// This file is used to initialize a books/user database
+// This file is used to initialize a books/user database it is ran ones before starting the server the first time.
+// It creates the database and tabels.
+
 const fs = require('fs');
 const sqlite3 = require("sqlite3").verbose();
 const book = require("../objects/book"); 

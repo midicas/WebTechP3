@@ -1,3 +1,5 @@
+// This script is for filling the database with our books.
+
 const sqlite3 = require("sqlite3").verbose();
 const book = require("../objects/book"); 
 const user = require("../objects/user");
@@ -478,9 +480,7 @@ for (bookie of booksArray){
     bookie.addToDB();
 }
 
-// add test user to db
-
-main()
+main();
 
 async function main(){
 }

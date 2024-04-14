@@ -1,3 +1,5 @@
+// This file is the app file that contains all the middleware and express things.
+
 var createError = require('http-errors');
 var express = require('express');
 var session = require('express-session');
@@ -16,7 +18,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+app.use(logger('common'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -33,8 +35,14 @@ app.use(session({
   }
 }));
 
+//Logging the username of sessions befor the requests
 app.use((req, res, next) => {
-  console.log(req.session);
+  if (req.session.user){
+    console.log('--USER: ' + req.session.user)
+  }
+  else{
+    console.log('--USER is unregistered')
+  }
   next();
 })
 
@@ -58,14 +66,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {pageTitle : 'Error'});
 });
-
-function isLoggedIn(req, res, next) {
-  if (req.session && req.session.user) {
-    return next(); // User is authenticated, continue to the next middleware
-  }
-  // User is not authenticated, redirect to login page
-  res.redirect('/users/login');
-}
 
 
 module.exports = app;

@@ -1,10 +1,12 @@
+// The script of the login page. handles the login logic and reading the form and sending the requests.
+
 var loginFailed = false;
 
 window.addEventListener("load", function() {
     document.getElementById("login-form").addEventListener("submit", mylogin, true);
 }, false);
 
-
+// The login eventhandler that checks the fields and posts the credentials to the server for authentication:
 function mylogin(e) {
     var userName = document.getElementById("username").value;
     var passWord = document.getElementById("password").value;
@@ -20,8 +22,7 @@ function mylogin(e) {
     e.preventDefault();
    }
 
-
-
+// The post function that handles the AJAX. When the response is 401 the page removes the password and adds a message. otherwise there is a rediction
 function post(url, userName, passWord){
     var req = new XMLHttpRequest();
 
