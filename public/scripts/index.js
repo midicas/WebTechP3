@@ -61,10 +61,10 @@ function renderCatalogue(text){
     var buttons = document.getElementById('pagination');
 
     if (start == 1){
-        buttons.childNodes[0].style.display = 'none';
+        buttons.childNodes[0].style.visibility = 'hidden';
     }
     else{
-        buttons.childNodes[0].style.display = 'block';
+        buttons.childNodes[0].style.visibility = 'visible';
     }
     var list = document.createElement('ul');
     list.id = "catalogue";
