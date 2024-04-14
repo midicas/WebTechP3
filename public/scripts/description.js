@@ -109,7 +109,7 @@ function release(){
 // This function handles the response of the reservation on the clients browser
 function reserveBook(response){
     if (response == 'redirect'){
-        window.location.href = '/group50/users/login';
+        window.location.href = '/users/login';
     }
     else{
         var button = document.getElementById('reserve');
