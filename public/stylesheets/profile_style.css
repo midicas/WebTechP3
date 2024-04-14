@@ -1,12 +1,32 @@
-#history{
-    float:left;
-    width:35%;
+@media(min-width:1200px){
+    #history{
+        float:left;
+        width:35%;
+    }
+    #current{
+        width:100%;
+    }
 }
-
 #books{
     border-color: transparent;
 }
 
 a{
+    text-decoration: none;
+}
+
+p{
+    width:100%;
+}
+
+button{
+    float:right;
+    width:20%;
+    text-align: center;
+    color:white;
+    background-color: #f1665f;
+    padding:10px 0px 10px 0px;
+    margin:0px 10px 0px 10px;
+    border-radius: 10px;
     text-decoration: none;
 }

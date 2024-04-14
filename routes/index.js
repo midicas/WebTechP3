@@ -57,10 +57,8 @@ router.get('/books/description/:bookID/check',async function(req,res,next){
         const isReserved = userObj.currentReservation.includes(bookID);
         
         if (isReserved) {
-            console.log("Book is reserved by the user");
             res.send("release"); // Send "release" if the book is reserved
         } else {
-            console.log("Book is not reserved by the user");
             res.send("reserve"); // Send "reserve" if the book is not reserved
         }
     } catch (error) {
@@ -79,7 +77,7 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
   //Connect to database for users and book
   //Add to reservation history of user
   //Subtract from available copies from book.
-
+  
   if (req.session && req.session.user) { 
 
     let bookID = parseInt(req.params.bookID);
@@ -97,7 +95,6 @@ router.get('/books/description/:bookID/reserve',async function(req,res,next){
     }
   }
   else{
-    console.log("redirect");
     res.send('redirect');
   }
 });
@@ -110,7 +107,6 @@ router.get('/books/description/:bookID/release',async function(req,res,next){
   if (req.session && req.session.user) { 
 
     let bookID = parseInt(req.params.bookID);
-    console.log(bookID);
     let bookObj = (await book.fetch([bookID]))[0];
     
       await bookObj.release();
@@ -119,7 +115,6 @@ router.get('/books/description/:bookID/release',async function(req,res,next){
       res.send((bookObj.availableCopies).toString());
   }
   else{
-    console.log("redirect");
     res.send('redirect');
   }
 });

@@ -52,9 +52,33 @@ async function renderHistory(history,section){
                 var p = document.createElement('p');
                 section.appendChild(p);
                 p.appendChild(link);
+                if (section.id == 'current'){
+                    p.id = "book"+book.id;
+                    var button = document.createElement('BUTTON');
+                    button.appendChild(document.createTextNode("Release"));
+                    button.onclick = function() {release(book.id)};
+                    p.appendChild(button);
+                }
             }
       };
     }
     var requestData = JSON.stringify({ history: history });
     req.send(requestData);
+}
+
+async function release(id){
+    var req = new XMLHttpRequest();
+    var url = "/books/description/"+id+"/release";
+
+    req.open("GET",url,true)
+    req.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200){
+            var section = document.getElementById("current");
+            var p = document.getElementById("book"+id);
+            console.log(p);
+            section.removeChild(p);
+        }
+    }
+    req.send();
+
 }

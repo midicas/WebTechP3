@@ -19,11 +19,11 @@ window.addEventListener("load",function(){
         if (this.readyState == 4 && this.status == 200){
             if(this.responseText == 'reserve'){
                 button.appendChild(document.createTextNode("Reserve"));
-                button.addEventListener('click',() => reserve(),false);
+                button.addEventListener('click',reserve,false);
             }
             else if(this.responseText == 'release'){
                 button.appendChild(document.createTextNode("Release"));
-                button.addEventListener('click',() => release(),false);
+                button.addEventListener('click',release,false);
             }
         }
     }
@@ -92,8 +92,8 @@ function release(){
             var availableCopies = document.getElementById("availableCopies");
             availableCopies.textContent = "";
             availableCopies.appendChild(document.createTextNode(this.responseText));
-            button.removeEventListener('click',() => release());
-            button.addEventListener('click', () => reserve());
+            button.removeEventListener('click',release);
+            button.addEventListener('click',reserve);
         }
     }
     req.send();
@@ -109,7 +109,7 @@ function reserveBook(response){
         var availableCopies = document.getElementById("availableCopies");
         availableCopies.textContent = "";
         availableCopies.appendChild(document.createTextNode(response));
-        button.removeEventListener('click',() => reserve());
-        button.addEventListener('click', () => release());
+        button.removeEventListener('click',reserve);
+        button.addEventListener('click',release);
     }
 }

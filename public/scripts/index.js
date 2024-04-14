@@ -46,7 +46,7 @@ function pagination(further){
             list.textContent = "";
             var main = document.getElementsByTagName('main')[0];
             main.removeChild(list);
-            
+            window.scrollTo(0, 0);
             renderCatalogue(this.responseText);
         }
       };
@@ -58,8 +58,14 @@ function renderCatalogue(text){
     if(books.length < range){
         max = start+books.length-1;
     }
-
     var buttons = document.getElementById('pagination');
+
+    if (start == 1){
+        buttons.childNodes[0].style.display = 'none';
+    }
+    else{
+        buttons.childNodes[0].style.display = 'block';
+    }
     var list = document.createElement('ul');
     list.id = "catalogue";
     buttons.parentNode.insertBefore(list,buttons);
