@@ -107,6 +107,6 @@ function addLink(id){
     var li = document.getElementById('book'+id);
     li.style.cursor = 'pointer';
     li.addEventListener('click',function(){
-        window.location.href = 'books/description/'+id;
+        window.location.href += 'books/description/'+id;
     },false);
 }
