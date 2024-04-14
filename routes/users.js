@@ -16,6 +16,13 @@ function isLoggedIn(req, res, next) {
   res.redirect('/users/login');
 }
 
+//Get the user object of the logged in user:
+router.get('/', isLoggedIn, async function(req, res, next) {
+  const userObj = await user.fetch(req.session.user);
+
+  res.send(userObj);
+});
+
 //Get the profile page
 router.get('/profile', isLoggedIn, (req, res) => {
   //TODO: Give user through req.session.userName.

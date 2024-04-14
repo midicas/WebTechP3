@@ -10,6 +10,11 @@ router.get('/',function(req,res,next){
   res.render("index",{pageTitle:"Catalogue"});
 });
 
+// Get the book description page:
+router.get("/books/description/:bookID",(req,res,next)=>{
+  res.render('description',{pageTitle:"Description"});
+});
+
 // Get the book objects for the pagination:
 router.get('/books/:start/:range',async function(req,res,next){
   //Fetch Books from database
@@ -27,11 +32,6 @@ router.get('/books/:start/:range',async function(req,res,next){
     console.error(error);
     res.status(500).send("Internal Server Error");
 }
-});
-
-// Get the book description page:
-router.get("/books/description/:bookID",(req,res,next)=>{
-  res.render('description',{pageTitle:"Description"});
 });
 
 // Get the book description for rendering on the website.
